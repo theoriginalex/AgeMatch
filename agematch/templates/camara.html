@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detección Edad y Emoción</title>
+</head>
+<body>
+  <video id="video" width="320" height="240" autoplay></video>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+  <button id="capturar">Capturar y Enviar</button>
+  <div id="resultado"></div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const resultado = document.getElementById('resultado');
+
+    // Iniciar cámara
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      video.srcObject = stream;
+    });
+
+    document.getElementById('capturar').addEventListener('click', () => {
+      const context = canvas.getContext('2d');
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append('imagen', blob, 'captura.jpg');
+
+        fetch('/detectar/', {
+          method: 'POST',
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          resultado.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          resultado.textContent = 'Error: ' + err;
+        });
+      }, 'image/jpeg');
+    });
+  </script>
+</body>
+</html>

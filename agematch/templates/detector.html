@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detector de Edad y Emoción</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 40px;
+    }
+    video, canvas {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+    #resultado {
+      margin-top: 15px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    #musica {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Detector de Edad y Emoción en Vivo</h2>
+
+  <video id="video" width="320" height="240" autoplay></video>
+  <br>
+  <button id="btnCapturar" onclick="capturar()">Capturar</button>
+  <div id="resultado"></div>
+  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+  <div id="musica"></div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const resultado = document.getElementById('resultado');
+    const musica = document.getElementById('musica');
+    const btn = document.getElementById('btnCapturar');
+
+    // Activar cámara
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; })
+      .catch(e => {
+        resultado.textContent = 'Error al acceder a la cámara: ' + e.message;
+      });
+
+    function capturar() {
+      btn.disabled = true;
+      resultado.textContent = "Procesando imagen...";
+      musica.innerHTML = "";
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(blob => {
+        const formData = new FormData();
+        formData.append('imagen', blob, 'foto.jpg');
+
+        fetch('/detectar/', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            resultado.textContent = 'Error: ' + data.error;
+          } else {
+            resultado.textContent = `Edad estimada: ${data.edad} años | Emoción: ${data.emocion}`;
+            obtenerSpotifyPlaylist(data.emocion);
+          }
+        })
+        .catch(() => {
+          resultado.textContent = 'Error al comunicarse con el servidor.';
+        })
+        .finally(() => {
+          btn.disabled = false;
+        });
+      }, 'image/jpeg');
+    }
+
+    function obtenerSpotifyPlaylist(emocion) {
+      fetch(`/spotify_playlist/?emocion=${encodeURIComponent(emocion.toLowerCase())}`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.url) {
+            mostrarMusicaSpotify(data.url, data.genero);
+          } else {
+            musica.innerHTML = 'No se pudo obtener la playlist de Spotify.';
+          }
+        })
+        .catch(() => {
+          musica.innerHTML = 'Error al obtener la playlist de Spotify.';
+        });
+    }
+
+    function mostrarMusicaSpotify(spotifyUrl, genero) {
+        // Extrae el URI de la playlist de la URL
+        const uriMatch = spotifyUrl.match(/playlist\/([^?]+)/);
+        const uri = uriMatch ? `spotify:playlist:${uriMatch[1]}` : null;
+      
+        if (uri) {
+          fetch(`/spotify/reproducir/?playlist_uri=${encodeURIComponent(uri)}`)
+            .then(res => res.json())
+            .then(data => {
+              console.log("Spotify reproducción:", data);
+              // Si se reproduce correctamente, también puedes abrir la playlist como respaldo
+              window.open(spotifyUrl, '_blank');
+            })
+            .catch(() => {
+              console.log("Error al iniciar reproducción en Spotify.");
+              // Abrir al menos la playlist
+              window.open(spotifyUrl, '_blank');
+            });
+        } else {
+          // Si falla el URI, al menos abrir la URL
+          window.open(spotifyUrl, '_blank');
+        }
+      
+        // Mostrar el iframe como referencia visual
+        musica.innerHTML = `
+          <h3>Género sugerido: ${genero}</h3>
+          <iframe style="border-radius:12px"
+                  src="${spotifyUrl}"
+                  width="320"
+                  height="180"
+                  frameborder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy">
+          </iframe>
+        `;
+      }
+      
+      
+
+  </script>
+
+</body>
+</html>
