@@ -60,7 +60,7 @@
         const formData = new FormData();
         formData.append('imagen', blob, 'foto.jpg');
 
-        fetch('/detectar/', {
+        fetch('{% url 'detectar_emocion' %}', {
           method: 'POST',
           body: formData
         })
@@ -83,7 +83,7 @@
     }
 
     function obtenerSpotifyPlaylist(emocion) {
-      fetch(`/spotify_playlist/?emocion=${encodeURIComponent(emocion.toLowerCase())}`)
+      fetch('{% url 'obtener_playlist' %}?emocion=' + encodeURIComponent(emocion.toLowerCase()))
         .then(response => response.json())
         .then(data => {
           if (data.url) {
@@ -103,7 +103,7 @@
         const uri = uriMatch ? `spotify:playlist:${uriMatch[1]}` : null;
       
         if (uri) {
-          fetch(`/spotify/reproducir/?playlist_uri=${encodeURIComponent(uri)}`)
+          fetch('{% url 'reproducir_playlist' %}?playlist_uri=' + encodeURIComponent(uri))
             .then(res => res.json())
             .then(data => {
               console.log("Spotify reproducción:", data);

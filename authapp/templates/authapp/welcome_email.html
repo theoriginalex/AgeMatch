@@ -1,0 +1,17 @@
+{% load i18n %}
+{% autoescape off %}
+Hola {{ user.username }},
+
+¡Bienvenido/a a AgeMatch!
+
+Tu cuenta ha sido creada exitosamente. Aquí tienes tus datos de acceso:
+
+Correo electrónico: {{ user.email }}
+
+Para cambiar tu contraseña, puedes hacerlo en cualquier momento desde tu perfil.
+
+¡Disfruta de AgeMatch!
+
+Saludos,
+El equipo de AgeMatch
+{% endautoescape %}

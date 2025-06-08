@@ -1,18 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import numpy as np
 import cv2
 from agematch.servicio.unificado import detectar_emocion_edad
-from django.http import HttpResponse
-from . import views  # Asegúrate de importar las vistas correctamente
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
+import requests
+import urllib.parse
+
+CLIENT_ID = '63211bd581204259a19970e080297229'
+CLIENT_SECRET = '1737b93ac398442fbdb68418d20fcb92'
+REDIRECT_URI = 'http://127.0.0.1:8000/detector/callback/'
+
+@login_required
+def home(request):
+    return render(request, 'home.html')
 
 def detector_view(request):
+    if not request.user.is_authenticated:
+        return redirect('auth:register')
     # Renderiza la página con la cámara y botón
     return render(request, 'detector.html')
 
 @csrf_exempt  # Solo para pruebas; luego maneja bien CSRF
 def detectar_emocion_edad_view(request):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Debes iniciar sesión'}, status=401)
+    
     if request.method == 'POST':
         imagen = request.FILES.get('imagen')
         if not imagen:
@@ -25,16 +40,6 @@ def detectar_emocion_edad_view(request):
         return JsonResponse(resultado)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
-
-
-import requests
-from django.http import JsonResponse
-from django.shortcuts import redirect
-import urllib.parse
-
-CLIENT_ID = '63211bd581204259a19970e080297229'
-CLIENT_SECRET = '1737b93ac398442fbdb68418d20fcb92'
-REDIRECT_URI = 'http://127.0.0.1:8000/detector/callback/'
 
 def spotify_login(request):
     scope = 'user-read-private user-read-email streaming user-modify-playback-state playlist-read-private'
@@ -50,11 +55,6 @@ def spotify_login(request):
 
     url = auth_url + urllib.parse.urlencode(params)
     return redirect(url)
-
-def spotify_callback(request):
-    # Tu lógica para intercambiar el código por el token de acceso
-    return JsonResponse({'mensaje': 'Callback ejecutado correctamente'})
-
 
 def spotify_callback(request):
     code = request.GET.get('code')
@@ -92,29 +92,53 @@ def spotify_callback(request):
     request.session['refresh_token'] = refresh_token
 
     # Puedes redirigir a cualquier parte de tu app
-    return redirect('/detector/')  # o 'return render(...)' si prefieres
-
-from django.http import JsonResponse
+    return redirect('/detector/')
 
 def obtener_playlist(request):
     emocion = request.GET.get('emocion')
-    if emocion == 'feliz':
-        return JsonResponse({
+    playlists = {
+        'feliz': {
             "url": "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
             "genero": "Pop"
-        })
-    elif emocion == 'triste':
-        return JsonResponse({
+        },
+        'triste': {
             "url": "https://open.spotify.com/playlist/37i9dQZF1DWSqBruwoIXkA",
             "genero": "Blues"
-        })
+        },
+        'enojado': {
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
+            "genero": "Rock"
+        },
+        'neutral': {
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX1tyNDVQQ7iB",
+            "genero": "Indie"
+        },
+        'sorprendido': {
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO",
+            "genero": "Electronic"
+        },
+        'temeroso': {
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
+            "genero": "Rock"
+        },
+        'disgustado': {
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
+            "genero": "Rock"
+        }
+    }
+    
+    playlist = playlists.get(emocion.lower())
+    if playlist:
+        return JsonResponse(playlist)
     else:
-        return JsonResponse({"error": "No se encontró una playlist para esa emoción."})
-
+        return JsonResponse({
+            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
+            "genero": "Rock"
+        })
 
 def reproducir_playlist(request):
     playlist_uri = request.GET.get('playlist_uri')
-    access_token = request.session.get('spotify_token')  # o donde sea que lo tengas guardado
+    access_token = request.session.get('access_token')  # Usar access_token en lugar de spotify_token
 
     if not playlist_uri or not access_token:
         return JsonResponse({'error': 'No se encontró el token o la URI de la playlist'}, status=400)

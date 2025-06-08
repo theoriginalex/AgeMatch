@@ -19,7 +19,8 @@ from django.urls import path, include
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
- path('admin/', admin.site.urls),
- path('', include('agematch.urls')),
- path('', RedirectView.as_view(url='/detector/', permanent=False)),
+    path('admin/', admin.site.urls),
+    path('', RedirectView.as_view(url='auth/register/')),
+    path('home/', include('agematch.urls')),
+    path('auth/', include(('authapp.urls', 'authapp'), namespace='auth')),
 ]
