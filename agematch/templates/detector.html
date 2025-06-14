@@ -35,108 +35,105 @@
   <div id="musica"></div>
 
   <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const resultado = document.getElementById('resultado');
-    const musica = document.getElementById('musica');
-    const btn = document.getElementById('btnCapturar');
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const resultado = document.getElementById('resultado');
+  const musica = document.getElementById('musica');
+  const btn = document.getElementById('btnCapturar');
 
-    // Activar cámara
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => { video.srcObject = stream; })
-      .catch(e => {
-        resultado.textContent = 'Error al acceder a la cámara: ' + e.message;
-      });
+  // 🔹 Activar cámara
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      video.srcObject = stream;
+    })
+    .catch(e => {
+      resultado.textContent = 'Error al acceder a la cámara: ' + e.message;
+    });
 
-    function capturar() {
-      btn.disabled = true;
-      resultado.textContent = "Procesando imagen...";
-      musica.innerHTML = "";
+  // 🔹 Capturar imagen y detectar emoción
+  function capturar() {
+    btn.disabled = true;
+    resultado.textContent = "Procesando imagen...";
+    musica.innerHTML = "";
 
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      canvas.toBlob(blob => {
-        const formData = new FormData();
-        formData.append('imagen', blob, 'foto.jpg');
+    canvas.toBlob(blob => {
+      const formData = new FormData();
+      formData.append('imagen', blob, 'foto.jpg');
 
-        fetch('{% url 'detectar_emocion' %}', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.error) {
-            resultado.textContent = 'Error: ' + data.error;
-          } else {
-            resultado.textContent = `Edad estimada: ${data.edad} años | Emoción: ${data.emocion}`;
-            obtenerSpotifyPlaylist(data.emocion);
-          }
-        })
-        .catch(() => {
-          resultado.textContent = 'Error al comunicarse con el servidor.';
-        })
-        .finally(() => {
-          btn.disabled = false;
-        });
-      }, 'image/jpeg');
-    }
-
-    function obtenerSpotifyPlaylist(emocion) {
-      fetch('{% url 'obtener_playlist' %}?emocion=' + encodeURIComponent(emocion.toLowerCase()))
-        .then(response => response.json())
-        .then(data => {
-          if (data.url) {
-            mostrarMusicaSpotify(data.url, data.genero);
-          } else {
-            musica.innerHTML = 'No se pudo obtener la playlist de Spotify.';
-          }
-        })
-        .catch(() => {
-          musica.innerHTML = 'Error al obtener la playlist de Spotify.';
-        });
-    }
-
-    function mostrarMusicaSpotify(spotifyUrl, genero) {
-        // Extrae el URI de la playlist de la URL
-        const uriMatch = spotifyUrl.match(/playlist\/([^?]+)/);
-        const uri = uriMatch ? `spotify:playlist:${uriMatch[1]}` : null;
-      
-        if (uri) {
-          fetch('{% url 'reproducir_playlist' %}?playlist_uri=' + encodeURIComponent(uri))
-            .then(res => res.json())
-            .then(data => {
-              console.log("Spotify reproducción:", data);
-              // Si se reproduce correctamente, también puedes abrir la playlist como respaldo
-              window.open(spotifyUrl, '_blank');
-            })
-            .catch(() => {
-              console.log("Error al iniciar reproducción en Spotify.");
-              // Abrir al menos la playlist
-              window.open(spotifyUrl, '_blank');
-            });
+      fetch('{% url "detectar_emocion" %}', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          resultado.textContent = 'Error: ' + data.error;
         } else {
-          // Si falla el URI, al menos abrir la URL
-          window.open(spotifyUrl, '_blank');
+          resultado.textContent = `Edad estimada: ${data.edad} años | Emoción: ${data.emocion}`;
+          obtenerSpotifyPlaylist(data.emocion);  // Va al siguiente paso
         }
-      
-        // Mostrar el iframe como referencia visual
-        musica.innerHTML = `
-          <h3>Género sugerido: ${genero}</h3>
-          <iframe style="border-radius:12px"
-                  src="${spotifyUrl}"
-                  width="320"
-                  height="180"
-                  frameborder="0"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy">
-          </iframe>
-        `;
-      }
-      
-      
+      })
+      .catch(() => {
+        resultado.textContent = 'Error al comunicarse con el servidor.';
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+    }, 'image/jpeg');
+  }
 
-  </script>
+  // 🔹 Buscar playlist según emoción y reproducir
+  function obtenerSpotifyPlaylist(emocion) {
+    fetch(`/home/detector/spotify/playlist/?emocion=${emocion}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          resultado.textContent = 'No se encontró una playlist para esta emoción.';
+          return;
+        }
+
+        const uri = data.spotify_uri;
+        const genero = data.genero;
+
+        // Reproducir en Spotify
+      fetch(`/home/detector/spotify/reproducir/?playlist_uri=${encodeURIComponent(uri)}`) 
+          .then(res => res.json())
+          .then(reproduccion => {
+            console.log("Spotify dice:", reproduccion.mensaje || reproduccion.error);
+          });
+
+        // Mostrar visualmente el iframe
+        mostrarMusicaSpotify(uri, genero);
+      })
+      .catch(err => {
+        console.error("Error obteniendo playlist:", err);
+        resultado.textContent = 'Error obteniendo playlist desde el servidor.';
+      });
+  }
+
+  // 🔹 Mostrar playlist en el DOM con iframe
+  function mostrarMusicaSpotify(uri, genero) {
+    const playlistId = uri.split(':').pop();
+    const embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+    const linkUrl = `https://open.spotify.com/playlist/${playlistId}`;
+
+    musica.innerHTML = `
+      <h3>Género sugerido: ${genero}</h3>
+      <iframe style="border-radius:12px"
+              src="${embedUrl}"
+              width="320"
+              height="180"
+              frameborder="0"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy">
+      </iframe>
+      <p><a href="${linkUrl}" target="_blank">Abrir en Spotify</a></p>
+    `;
+  }
+</script>
 
 </body>
 </html>

@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import requests
 import urllib.parse
+from agematch.models import PlaylistEmocion, RegistroEmocion
 
 CLIENT_ID = '63211bd581204259a19970e080297229'
 CLIENT_SECRET = '1737b93ac398442fbdb68418d20fcb92'
@@ -37,6 +38,12 @@ def detectar_emocion_edad_view(request):
         img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
         resultado = detectar_emocion_edad(img)
+        RegistroEmocion.objects.create(
+        usuario=request.user,
+        emocion=resultado['emocion'],
+        edad=resultado['edad']
+    )
+
         return JsonResponse(resultado)
 
     return JsonResponse({'error': 'Método no permitido'}, status=405)
@@ -96,45 +103,17 @@ def spotify_callback(request):
 
 def obtener_playlist(request):
     emocion = request.GET.get('emocion')
-    playlists = {
-        'feliz': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX3rxVfibe1L0",
-            "genero": "Pop"
-        },
-        'triste': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DWSqBruwoIXkA",
-            "genero": "Blues"
-        },
-        'enojado': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
-            "genero": "Rock"
-        },
-        'neutral': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX1tyNDVQQ7iB",
-            "genero": "Indie"
-        },
-        'sorprendido': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4sWSpwq3LiO",
-            "genero": "Electronic"
-        },
-        'temeroso': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
-            "genero": "Rock"
-        },
-        'disgustado': {
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
-            "genero": "Rock"
-        }
-    }
+    if not emocion:
+        return JsonResponse({'error': 'Emoción no proporcionada'}, status=400)
     
-    playlist = playlists.get(emocion.lower())
-    if playlist:
-        return JsonResponse(playlist)
-    else:
-        return JsonResponse({
-            "url": "https://open.spotify.com/playlist/37i9dQZF1DX4WYpdgoIcn6",
-            "genero": "Rock"
-        })
+    try:
+        playlist = PlaylistEmocion.objects.get(emocion__iexact=emocion)
+        if playlist:
+            return JsonResponse({'spotify_uri': playlist.spotify_uri, 'genero': playlist.genero})
+        else:
+            return JsonResponse({'error': 'No se encontró una playlist para esa emoción'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 
 def reproducir_playlist(request):
     playlist_uri = request.GET.get('playlist_uri')
@@ -193,3 +172,22 @@ def refresh_spotify_token(request):
     request.session['access_token'] = new_access_token
 
     return JsonResponse({'access_token': new_access_token, 'mensaje': 'Token actualizado correctamente'})
+
+
+from django.db.models import Count
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def estadisticas_view(request):
+    registros = (RegistroEmocion.objects
+                 .filter(usuario=request.user)
+                 .values('emocion')
+                 .annotate(total=Count('emocion'))
+                 .order_by('-total'))
+
+    posible_depresion = any(r['emocion'] == 'triste' and r['total'] >= 5 for r in registros)
+
+    return render(request, 'estadisticas.html', {
+        'registros': registros,
+        'posible_depresion': posible_depresion,
+    })
