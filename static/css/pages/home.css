@@ -1,0 +1,186 @@
+@import url('../variables/_variables.css');
+
+/* Hero Section */
+.hero-section {
+    background: var(--bg-primary);
+    padding: var(--spacing-xl);
+    border-radius: 16px;
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+}
+
+.hero-title {
+    color: var(--text-primary);
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+.hero-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+/* Botones principales */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition-base);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-outline-light {
+    color: var(--text-primary);
+    border: 1px solid var(--text-muted);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 8px;
+    font-weight: 500;
+    transition: var(--transition-base);
+}
+
+.btn-outline-light:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+/* Tarjetas de características */
+.feature-card {
+    background: var(--bg-primary);
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+}
+
+.feature-card .card-body {
+    padding: var(--spacing-lg);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.feature-title {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Sección de beneficios */
+.card {
+    background: var(--bg-primary);
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-base);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+}
+
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+.card-title {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.card-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* CTA Section */
+.card.bg-primary {
+    background: var(--gradient-primary) !important;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+}
+
+.card.bg-primary .card-body {
+    padding: var(--spacing-xl);
+}
+
+.card.bg-primary .card-title {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-primary,
+    .btn-outline-light {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .feature-card {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .feature-icon {
+        font-size: 2rem;
+    }
+
+    .card {
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* Ajustes específicos */
+.container {
+    max-width: 1200px;
+    padding: 0 var(--spacing-lg);
+}
+
+.row {
+    margin-left: -8px;
+    margin-right: -8px;
+}
+
+.col-12 {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.g-4 {
+    gap: var(--spacing-lg) !important;
+}

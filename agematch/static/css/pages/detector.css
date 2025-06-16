@@ -1,0 +1,173 @@
+@import url('../variables/_variables.css');
+
+/* Contenedor principal */
+.detector-container {
+    padding: var(--spacing-xl);
+    min-height: calc(100vh - var(--spacing-xl));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Encabezado */
+.detector-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.detector-header h2 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.detector-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Enlace de power by */
+.power-by-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-xl);
+}
+
+.power-by-link .text-success {
+    color: var(--success-color);
+    font-weight: 500;
+}
+
+.power-by-link:hover {
+    color: var(--text-primary);
+}
+
+/* Contenedor de video */
+.video-container {
+    background: var(--bg-primary);
+    border-radius: 16px;
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.video-container video {
+    width: 100%;
+    border-radius: 12px;
+    background: var(--bg-overlay);
+}
+
+/* Botón de captura */
+#btnCapturar {
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+    justify-content: center;
+}
+
+#btnCapturar:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+#btnCapturar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Resultado */
+#resultado {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    margin: var(--spacing-lg) 0;
+    background: var(--bg-primary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#resultado.success {
+    color: var(--success-color);
+}
+
+#resultado.error {
+    color: var(--danger-color);
+}
+
+/* Spotify iframe */
+.spotify-iframe {
+    width: 100%;
+    max-width: 800px;
+    margin-top: var(--spacing-xl);
+}
+
+.spotify-iframe iframe {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.spotify-iframe h3 {
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.spotify-iframe p {
+    text-align: center;
+    margin-top: var(--spacing-sm);
+}
+
+.spotify-iframe a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.spotify-iframe a:hover {
+    color: var(--primary-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .detector-container {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .video-container {
+        padding: var(--spacing-md);
+    }
+
+    #btnCapturar {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 1rem;
+    }
+
+    .spotify-iframe iframe {
+        width: 100%;
+        height: 240px;
+    }
+}

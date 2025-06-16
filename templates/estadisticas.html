@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/estadisticas.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/estadisticas.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="estadisticas-container">
+    <section class="grafico-section">
+        <div class="grafico-container">
+            <h2 class="grafico-title">Estadísticas de Emociones</h2>
+            <div class="grafico-wrapper">
+                <canvas id="grafico-emociones" data-registros='{{ registros|safe|escapejs }}'></canvas>
+                {% if registros %}
+                    <div class="estadistica-info">
+                        <div class="estadistica-valor">{{ registros.0.total }}</div>
+                        <div class="estadistica-descripcion">Emoción más frecuente: {{ registros.0.emocion }}</div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="registros-section">
+        <div class="registros-container">
+            {% if registros %}
+                <div class="table-responsive">
+                    <table class="estadisticas-table">
+                        <thead>
+                            <tr>
+                                <th class="table-header">Emoción</th>
+                                <th class="table-header">Total</th>
+                                <th class="table-header">Porcentaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registro in registros %}
+                            <tr class="table-row">
+                                <td class="table-cell">{{ registro.emocion }}</td>
+                                <td class="table-cell">{{ registro.total }}</td>
+                                <td class="table-cell">{{ registro.total|floatformat:"1" }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="no-registros">No hay registros de emociones disponibles.</p>
+            {% endif %}
+        </div>
+    </section>
+
+    {% if posible_depresion %}
+        <section class="alerta-section">
+            <div class="alerta-depresión">
+                <h3 class="alerta-title">Alerta de Depresión</h3>
+                <p class="alerta-text">Se ha detectado una posible depresión debido a la cantidad de emociones tristes registradas.</p>
+            </div>
+        </section>
+    {% endif %}
+</div>
+{% endblock %}

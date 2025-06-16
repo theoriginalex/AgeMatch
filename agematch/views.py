@@ -38,11 +38,15 @@ def detectar_emocion_edad_view(request):
         img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
 
         resultado = detectar_emocion_edad(img)
+        
+        if 'error' in resultado:
+            return JsonResponse(resultado, status=400)
+            
         RegistroEmocion.objects.create(
-        usuario=request.user,
-        emocion=resultado['emocion'],
-        edad=resultado['edad']
-    )
+            usuario=request.user,
+            emocion=resultado['emocion'],
+            edad=resultado['edad']
+        )
 
         return JsonResponse(resultado)
 
@@ -180,10 +184,10 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def estadisticas_view(request):
     registros = (RegistroEmocion.objects
-                 .filter(usuario=request.user)
-                 .values('emocion')
-                 .annotate(total=Count('emocion'))
-                 .order_by('-total'))
+                .filter(usuario=request.user)
+                .values('emocion')
+                .annotate(total=Count('emocion'))
+                .order_by('-total'))
 
     posible_depresion = any(r['emocion'] == 'triste' and r['total'] >= 5 for r in registros)
 
@@ -191,3 +195,4 @@ def estadisticas_view(request):
         'registros': registros,
         'posible_depresion': posible_depresion,
     })
+

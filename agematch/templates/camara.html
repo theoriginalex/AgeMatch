@@ -1,46 +1,88 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Detección Edad y Emoción</title>
-</head>
-<body>
-  <video id="video" width="320" height="240" autoplay></video>
-  <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
-  <button id="capturar">Capturar y Enviar</button>
-  <div id="resultado"></div>
+{% extends 'base.html' %}
+{% load static %}
 
-  <script>
+{% block title %}Detector de Edad y Emoción{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/detector.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detector-container">
+    <div class="detector-header">
+        <h2>Detector de Edad y Emoción en Vivo</h2>
+        <p>Analiza tu rostro para detectar tu edad y emoción actual</p>
+    </div>
+
+    <div class="video-container">
+        <video id="video" autoplay></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+    </div>
+
+    <button id="capturar">Capturar</button>
+    <div id="resultado"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const resultado = document.getElementById('resultado');
+    const btn = document.getElementById('capturar');
 
-    // Iniciar cámara
-    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-      video.srcObject = stream;
-    });
-
-    document.getElementById('capturar').addEventListener('click', () => {
-      const context = canvas.getContext('2d');
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      canvas.toBlob(blob => {
-        const formData = new FormData();
-        formData.append('imagen', blob, 'captura.jpg');
-
-        fetch('/detectar/', {
-          method: 'POST',
-          body: formData
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
         })
-        .then(res => res.json())
-        .then(data => {
-          resultado.textContent = JSON.stringify(data, null, 2);
-        })
-        .catch(err => {
-          resultado.textContent = 'Error: ' + err;
+        .catch(e => {
+            resultado.textContent = 'Error al acceder a la cámara: ' + e.message;
         });
-      }, 'image/jpeg');
+
+    btn.addEventListener('click', () => {
+        btn.disabled = true;
+        resultado.textContent = "Procesando imagen...";
+
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
+        canvas.width = videoWidth;
+        canvas.height = videoHeight;
+
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+
+        canvas.toBlob(blob => {
+            if (!blob) {
+                resultado.textContent = 'Error: No se pudo capturar la imagen';
+                btn.disabled = false;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('imagen', blob, 'foto.jpg');
+
+            fetch('/detectar/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultado.textContent = 'Error: ' + data.error;
+                } else {
+                    resultado.textContent = `Edad estimada: ${data.edad} años | Emoción: ${data.emocion}`;
+                }
+            })
+            .catch(() => {
+                resultado.textContent = 'Error al comunicarse con el servidor.';
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
+        }, 'image/jpeg');
     });
-  </script>
-</body>
-</html>
+</script>
+{% endblock %}

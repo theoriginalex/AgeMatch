@@ -1,33 +1,36 @@
 {% extends 'base.html' %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth/login.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Iniciar Sesión</h3>
+<div class="form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h3>🎵 Iniciar Sesión</h3>
+        </div>
+        <div class="form-body">
+            <form method="post" action="{% url 'auth:login' %}" class="login-form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <input type="text" name="username" id="id_username" class="form-input" placeholder="">
+                    <label for="id_username" class="form-label">Nombre de usuario</label>
                 </div>
-                <div class="card-body">
-                    <form method="post" action="{% url 'auth:login' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="id_username" class="form-label">Nombre de usuario</label>
-                            <input type="text" name="username" class="form-control" id="id_username" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="id_password" class="form-label">Contraseña</label>
-                            <input type="password" name="password" class="form-control" id="id_password" required>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
-                        </div>
-                    </form>
-                    <div class="text-center mt-3">
-                        <a href="{% url 'auth:password_reset' %}" class="btn btn-link">¿Olvidaste tu contraseña?</a>
-                    </div>
+
+                <div class="form-group">
+                    <input type="password" name="password" id="id_password" class="form-input" placeholder="">
+                    <label for="id_password" class="form-label">Contraseña</label>
                 </div>
-            </div>
+
+                <button type="submit" class="form-button">🎧 Iniciar Sesión</button>
+
+                <div class="form-message">
+                    <a href="{% url 'auth:password_reset' %}" class="form-link">¿Olvidaste tu contraseña?</a>
+                </div>
+            </form>
         </div>
     </div>
 </div>

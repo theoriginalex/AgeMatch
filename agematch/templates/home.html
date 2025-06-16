@@ -1,20 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Bienvenido a AgeMatch</h3>
-                </div>
-                <div class="card-body">
-                    <div class="text-center">
-                        <p>Hola {{ user.username }}!</p>
-                        <a href="{% url 'detector' %}" class="btn btn-primary btn-lg">Iniciar Detección</a>
-                        <a href="{% url 'auth:password_reset' %}" class="btn btn-secondary btn-lg">Cambiar Contraseña</a>
-                        <a href="{% url 'auth:logout' %}" class="btn btn-danger btn-lg">Cerrar Sesión</a>
+    <div class="row">
+        <!-- Sección Hero -->
+        <div class="col-12 hero-section">
+            <h1 class="hero-title">Bienvenido a AgeMatch</h1>
+            <p class="hero-subtitle">La solución inteligente para analizar tus emociones y edad</p>
+            <div class="hero-buttons">
+                <a href="{% url 'detector' %}" class="btn btn-primary btn-lg">Iniciar Detección</a>
+                <a href="{% url 'estadisticas' %}" class="btn btn-outline-light btn-lg">Ver Estadísticas</a>
+            </div>
+        </div>
+
+        <!-- Características -->
+        <div class="col-12 mb-5">
+            <h2 class="text-center mb-4">¿Qué podemos hacer?</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-camera feature-icon text-primary"></i>
+                            <h3 class="feature-title">Detección Automática</h3>
+                            <p class="card-text">Analiza tu rostro en tiempo real para detectar tu edad y emociones actuales.</p>
+                        </div>
                     </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+                            <h3 class="card-title">Estadísticas Inteligentes</h3>
+                            <p class="card-text">Mantén un registro de tus emociones y edad a lo largo del tiempo.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-music fa-3x mb-3 text-primary"></i>
+                            <h3 class="card-title">Recomendaciones Musicales</h3>
+                            <p class="card-text">Obtén playlists personalizadas basadas en tu estado de ánimo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Beneficios -->
+        <div class="col-12 mb-5">
+            <h2 class="text-center mb-4">¿Por qué usar AgeMatch?</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Autoconocimiento</h3>
+                            <p class="card-text">Conoce mejor tus emociones y patrones de comportamiento.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Bienestar Emocional</h3>
+                            <p class="card-text">Recibe recomendaciones personalizadas para mejorar tu estado de ánimo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="col-12">
+            <div class="card text-white bg-primary">
+                <div class="card-body text-center">
+                    <h3 class="card-title mb-3">¡Empieza a conocer tus emociones hoy mismo!</h3>
+                    <a href="{% url 'detector' %}" class="btn btn-light btn-lg px-4">Iniciar Detección</a>
                 </div>
             </div>
         </div>

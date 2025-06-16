@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', RedirectView.as_view(url='auth/register/')),
     path('home/', include('agematch.urls')),
-    path('auth/', include(('authapp.urls', 'authapp'), namespace='auth')),
+    path('auth/', include('authapp.urls', namespace='auth')),
 ]

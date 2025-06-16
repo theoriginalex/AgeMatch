@@ -1,0 +1,185 @@
+@import url('../../variables/_variables.css');
+
+/* Contenedor principal */
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+    background: url('../../img/background.png') no-repeat center center fixed;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.75);
+    background-blend-mode: darken;
+    backdrop-filter: blur(4px);
+}
+
+/* Tarjeta de registro */
+.form-card {
+    width: 100%;
+    max-width: 480px;
+    background: var(--bg-overlay);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+}
+
+/* Cabecera */
+.form-header {
+    background: var(--gradient-primary);
+    padding: var(--spacing-xl);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-header h3 {
+    color: var(--text-primary);
+    text-align: center;
+    font-size: 2rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+/* Cuerpo */
+.form-body {
+    padding: var(--spacing-xl);
+}
+
+/* Formulario */
+.register-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Grupo de form */
+/* Labels flotantes - Prioridad sobre Bootstrap */
+.form-group {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-group input.form-input {
+    width: 100%;
+    border: none !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-primary) !important;
+    padding: 1rem 1.2rem !important;
+    font-size: 1rem !important;
+    transition: all 0.3s ease !important;
+    outline: none !important;
+    border-radius: 8px !important;
+}
+
+.form-group input.form-input:focus {
+    border-color: var(--primary-color) !important;
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.15) !important;
+}
+
+.form-group input.form-input:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.form-group input.form-input::selection {
+    background: rgba(106, 17, 203, 0.2) !important;
+    color: white !important;
+}
+
+.form-group label {
+    position: absolute !important;
+    top: 1rem !important;
+    left: 0.5rem !important;
+    color: var(--text-muted) !important;
+    font-size: 1rem !important;
+    pointer-events: none !important;
+    transition: all 0.2s ease-out !important;
+    background: transparent !important;
+    z-index: 1 !important;
+}
+
+/* Flotación al escribir o enfocar */
+.form-group input.form-input:focus + label,
+.form-group input.form-input:not(:placeholder-shown) + label {
+    top: -0.5rem !important;
+    left: 0.4rem !important;
+    font-size: 0.75rem !important;
+    color: var(--primary-color) !important;
+    background-color: var(--bg-primary) !important;
+    padding: 0 0.25rem !important;
+    z-index: 2 !important;
+}
+
+/* Placeholder invisible para permitir uso de :placeholder-shown */
+.form-group input.form-input::placeholder {
+    color: transparent !important;
+}
+
+/* Error states */
+.form-group.has-error input.form-input {
+    border-color: var(--danger-color) !important;
+}
+
+.form-group.has-error label {
+    color: var(--danger-color) !important;
+}
+
+.form-error {
+    font-size: 0.85rem !important;
+    color: var(--danger-color) !important;
+    margin-top: 0.25rem !important;
+}
+
+/* Botón */
+.form-button {
+    margin-top: var(--spacing-lg);
+}
+
+/* Enlaces */
+.form-message {
+    margin-top: var(--spacing-md);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-container {
+        padding: var(--spacing-md);
+    }
+
+    .form-header h3 {
+        font-size: 1.75rem;
+    }
+
+    .form-body {
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .register-container {
+        padding: var(--spacing-md);
+    }
+
+    .form-header h3 {
+        font-size: 1.75rem;
+    }
+
+    .form-body {
+        padding: var(--spacing-lg);
+    }
+}
+
+/* Ajustes específicos para el formulario */
+.register-form .mb-3 {
+    margin-bottom: var(--spacing-md) !important;
+}
+
+.register-form .text-center {
+    text-align: center;
+}
+
+.register-form .mt-3 {
+    margin-top: var(--spacing-md) !important;
+}

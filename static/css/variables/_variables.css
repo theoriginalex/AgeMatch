@@ -1,0 +1,47 @@
+:root {
+    /* Colores principales */
+    --primary-color: #6a11cb;
+    --primary-light: #8e44ad;
+    --primary-dark: #4a008d;
+    --secondary-color: #2575fc;
+    --accent-color: #3498db;
+    
+    /* Colores de texto */
+    --text-primary: #ecf0f1;
+    --text-secondary: #cccccc;
+    --text-muted: #888888;
+    
+    /* Colores de fondo */
+    --bg-primary: rgba(30, 30, 30, 0.85);
+    --bg-secondary: rgba(44, 62, 80, 0.95);
+    --bg-overlay: rgba(255, 255, 255, 0.05);
+    
+    /* Colores de estado */
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    
+    /* Tipografía */
+    --font-primary: 'Segoe UI', sans-serif;
+    --font-secondary: 'Arial', sans-serif;
+    
+    /* Espaciado */
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Sombras */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.25);
+    
+    /* Transiciones */
+    --transition-base: all 0.3s ease;
+    --transition-fast: all 0.2s ease;
+    --transition-slow: all 0.4s ease;
+    
+    /* Gradientes */
+    --gradient-primary: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    --gradient-accent: linear-gradient(to right, var(--accent-color), var(--secondary-color));
+}

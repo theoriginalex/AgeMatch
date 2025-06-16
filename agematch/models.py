@@ -20,3 +20,5 @@ class RegistroEmocion(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.emocion} ({self.fecha.strftime('%Y-%m-%d %H:%M')})"
+
+

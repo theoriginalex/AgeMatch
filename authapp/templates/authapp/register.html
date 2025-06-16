@@ -1,67 +1,77 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
+<link rel="stylesheet" href="{% static 'css/auth/register.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="text-center">Registro</h3>
+<div class="register-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h3>🎶 Registro</h3>
+        </div>
+        <div class="form-body">
+            <form method="post" action="{% url 'auth:register' %}" class="register-form">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.username.errors %}has-error{% endif %}">
+                    <input type="text" name="username" id="id_username" class="form-input" placeholder="Nombre de usuario">
+                    <label for="id_username" class="form-label">Nombre de usuario</label>
+                    {% if form.username.errors %}
+                        <div class="form-error">
+                            {% for error in form.username.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-                <div class="card-body">
-                    <form method="post" action="{% url 'auth:register' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="{{ form.username.id_for_label }}" class="form-label">Nombre de usuario</label>
-                            {{ form.username }}
-                            {% if form.username.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.username.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+
+                <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+                    <input type="email" name="email" id="id_email" class="form-input" placeholder="Correo electrónico">
+                    <label for="id_email" class="form-label">Correo electrónico</label>
+                    {% if form.email.errors %}
+                        <div class="form-error">
+                            {% for error in form.email.errors %}
+                                {{ error }}
+                            {% endfor %}
                         </div>
-                        <div class="mb-3">
-                            <label for="{{ form.email.id_for_label }}" class="form-label">Correo electrónico</label>
-                            {{ form.email }}
-                            {% if form.email.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.email.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.password1.id_for_label }}" class="form-label">Contraseña</label>
-                            {{ form.password1 }}
-                            {% if form.password1.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.password1.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <div class="mb-3">
-                            <label for="{{ form.password2.id_for_label }}" class="form-label">Confirmar contraseña</label>
-                            {{ form.password2 }}
-                            {% if form.password2.errors %}
-                                <div class="text-danger">
-                                    {% for error in form.password2.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Registrarse</button>
-                        <div class="text-center mt-3">
-                            <p>¿Ya tienes cuenta? <a href="{% url 'auth:login' %}">Iniciar sesión</a></p>
-                        </div>
-                    </form>
+                    {% endif %}
                 </div>
-            </div>
+
+                <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+                    <input type="password" name="password1" id="id_password1" class="form-input" placeholder="Contraseña">
+                    <label for="id_password1" class="form-label">Contraseña</label>
+                    {% if form.password1.errors %}
+                        <div class="form-error">
+                            {% for error in form.password1.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
+                    <input type="password" name="password2" id="id_password2" class="form-input" placeholder="Confirmar contraseña">
+                    <label for="id_password2" class="form-label">Confirmar contraseña</label>
+                    {% if form.password2.errors %}
+                        <div class="form-error">
+                            {% for error in form.password2.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="form-button">🎶 Registrarse</button>
+
+                <div class="form-message">
+                    <p>¿Ya tienes cuenta? 
+                        <a href="{% url 'auth:login' %}" class="form-link">Inicia sesión aquí</a>
+                    </p>
+                </div>
+            </form>
         </div>
     </div>
 </div>
