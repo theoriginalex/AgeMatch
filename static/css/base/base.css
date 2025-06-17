@@ -1,6 +1,6 @@
 @import url('../variables/_variables.css');
 
-/* Reset base */
+/* ============ RESET ============ */
 * {
     margin: 0;
     padding: 0;
@@ -11,17 +11,17 @@ body {
     font-family: var(--font-primary);
     line-height: 1.6;
     color: var(--text-primary);
-    background-color: #000;
+    background-color: var(--bg-main, #000); /* Fallback negro */
 }
 
-/* Tipografía */
+/* ============ TIPOGRAFÍA ============ */
 h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-md);
     font-weight: 600;
     color: var(--text-primary);
 }
 
-/* Enlaces */
+/* ============ ENLACES ============ */
 a {
     color: var(--primary-color);
     text-decoration: none;
@@ -32,7 +32,7 @@ a:hover {
     color: var(--primary-light);
 }
 
-/* Botones */
+/* ============ BOTONES ============ */
 .button {
     display: inline-block;
     padding: var(--spacing-sm) var(--spacing-md);
@@ -53,7 +53,7 @@ a:hover {
     transform: translateY(-2px);
 }
 
-/* Contenedores */
+/* ============ CONTENEDORES ============ */
 .container {
     width: 100%;
     max-width: 1200px;
@@ -61,7 +61,11 @@ a:hover {
     padding: 0 var(--spacing-lg);
 }
 
-/* Tarjetas */
+.main-content {
+    padding-top: 2.5rem;
+}
+
+/* ============ TARJETAS ============ */
 .card {
     background: var(--bg-primary);
     border-radius: 16px;
@@ -74,7 +78,7 @@ a:hover {
     transform: translateY(-4px);
 }
 
-/* Formularios */
+/* ============ FORMULARIOS ============ */
 .form-group {
     margin-bottom: var(--spacing-md);
 }
@@ -102,7 +106,7 @@ a:hover {
     box-shadow: 0 0 6px var(--primary-color);
 }
 
-/* Mensajes */
+/* ============ MENSAJES ============ */
 .message {
     padding: var(--spacing-md);
     border-radius: 8px;
@@ -119,7 +123,7 @@ a:hover {
     color: var(--text-primary);
 }
 
-/* Responsive */
+/* ============ RESPONSIVE ============ */
 @media (max-width: 768px) {
     .container {
         padding: 0 var(--spacing-md);

@@ -127,13 +127,27 @@
         <h3>Género sugerido: ${genero}</h3>
         <iframe style="border-radius:12px"
                 src="${embedUrl}"
-                width="320"
-                height="180"
+                width="800"
+                height="330"
                 frameborder="0"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy">
         </iframe>
-        <p><a href="${linkUrl}" target="_blank">Abrir en Spotify</a></p>
+        <p style="text-align: center; margin: 1em 0;">
+  <a href="${linkUrl}" target="_blank"
+     style="
+       display: inline-block;
+       padding: 1px 16px;
+       background-color: #1DB954;
+       color: white;
+       text-decoration: none;
+       border-radius: 6px;
+       font-size: 15px;
+     ">
+    Abrir en Spotify
+  </a>
+</p>
+
       `;
     }
   </script>

@@ -1,218 +1,116 @@
-@import url('../../variables/_variables.css');
+@import url('../variables/_variables.css');
 
-/* Formulario base */
-.form-container {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
+/* Contenedor general del formulario */
+.form-container,
+.register-container,
+.password-reset-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl);
+  min-height: 100vh;
+  height: 100vh;
+  background-image: url('../../img/background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
 }
 
 .form-card {
-    background: var(--bg-primary);
-    border-radius: 16px;
-    box-shadow: var(--shadow-md);
-    overflow: hidden;
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .form-header {
-    background: var(--gradient-primary);
-    padding: var(--spacing-lg);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  margin-bottom: var(--spacing-md);
 }
 
 .form-header h3 {
-    color: var(--text-primary);
-    text-align: center;
-    margin: 0;
-    font-size: 1.75rem;
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
 }
 
 .form-body {
-    padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
-/* Grupos de form */
 .form-group {
-    margin-bottom: var(--spacing-lg);
-    position: relative;
-}
-
-.form-label {
-    display: block;
-    color: var(--text-primary);
-    font-weight: 600;
-    margin-bottom: var(--spacing-xs);
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
-    transition: var(--transition-base);
+  position: relative;
 }
 
 .form-input {
-    width: 100%;
-    padding: 1rem 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(255, 255, 255, 0.05);
-    border-radius: 14px;
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    transition: all 0.2s ease-in-out;
-    position: relative;
-    z-index: 1;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: border-color 0.3s;
 }
 
 .form-input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 
-        inset 0 1px 3px rgba(0, 0, 0, 0.1),
-        0 0 0 4px rgba(106, 17, 203, 0.2);
+  border-color: var(--primary-color);
+  outline: none;
 }
 
-.form-input:focus::placeholder {
-    color: var(--text-muted);
-    opacity: 0.5;
+.form-label {
+  position: absolute;
+  top: -0.75rem;
+  left: 0.75rem;
+  background-color: var(--bg-primary);
+  padding: 0 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
-/* Placeholder customizado */
-.form-input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.6;
-    font-weight: 300;
-}
-
-/* Efecto de hover */
-.form-group:hover .form-input {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
-}
-
-/* Efecto de error */
-.form-group.has-error .form-input {
-    border-color: var(--danger-color);
-    background: rgba(239, 68, 68, 0.05);
-    box-shadow: 
-        inset 0 1px 3px rgba(0, 0, 0, 0.1),
-        0 0 0 4px rgba(239, 68, 68, 0.15);
-}
-
-.form-group.has-error .form-input::placeholder {
-    color: var(--danger-color);
-    opacity: 0.7;
-}
-
-.form-group.has-error .form-label {
-    color: var(--danger-color);
-    font-weight: 600;
-}
-
-/* Efecto de transición */
-.form-input {
-    will-change: border-color, background-color, box-shadow;
-}
-
-/* Variación de tamaño según el tipo de input */
-.form-input[type="text"],
-.form-input[type="email"],
-.form-input[type="password"] {
-    min-height: 56px;
-}
-
-.form-input[type="text"]:hover,
-.form-input[type="email"]:hover,
-.form-input[type="password"]:hover {
-    padding-right: calc(1.5rem + 2px);
-}
-
-/* Efecto de animación al escribir */
-.form-input {
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mensajes de error */
-.form-error {
-    color: var(--danger-color);
-    font-size: 0.85rem;
-    margin-top: var(--spacing-sm);
-    padding: var(--spacing-sm);
-    background: var(--bg-danger);
-    border-radius: 4px;
-}
-
-/* Botones */
 .form-button {
-    width: 100%;
-    padding: var(--spacing-md);
-    background: var(--gradient-primary);
-    color: var(--text-primary);
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: var(--transition-base);
+  background-color: var(--primary-color);
+  color: white;
+  padding: var(--spacing-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .form-button:hover {
-    opacity: 0.9;
-    transform: translateY(-2px);
+  background-color: var(--primary-light);
 }
 
-.form-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Enlaces */
 .form-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: var(--transition-base);
+  color: var(--primary-light);
+  font-size: 0.9rem;
+  text-decoration: none;
 }
 
 .form-link:hover {
-    color: var(--primary-light);
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-/* Mensajes */
 .form-message {
-    text-align: center;
-    margin: var(--spacing-md) 0;
+  text-align: center;
+  margin-top: var(--spacing-sm);
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .form-container {
-        max-width: 100%;
-    }
+.form-error {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--danger-color, #e74c3c);
+}
 
-    .form-header h3 {
-        font-size: 1.5rem;
-    }
-
-    .form-input,
-    .form-button {
-        padding: var(--spacing-sm);
-    }
-
-    .form-link {
-        font-size: 0.85rem;
-    }
+.has-error .form-input {
+  border-color: var(--danger-color, #e74c3c);
 }

@@ -6,84 +6,82 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <!-- Sección Hero -->
-        <div class="col-12 hero-section">
-            <h1 class="hero-title">Bienvenido a AgeMatch</h1>
-            <p class="hero-subtitle">La solución inteligente para analizar tus emociones y edad</p>
-            <div class="hero-buttons">
-                <a href="{% url 'detector' %}" class="btn btn-primary btn-lg">Iniciar Detección</a>
-                <a href="{% url 'estadisticas' %}" class="btn btn-outline-light btn-lg">Ver Estadísticas</a>
-            </div>
-        </div>
+<div class="container py-4">
 
-        <!-- Características -->
-        <div class="col-12 mb-5">
-            <h2 class="text-center mb-4">¿Qué podemos hacer?</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-camera feature-icon text-primary"></i>
-                            <h3 class="feature-title">Detección Automática</h3>
-                            <p class="card-text">Analiza tu rostro en tiempo real para detectar tu edad y emociones actuales.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
-                            <h3 class="card-title">Estadísticas Inteligentes</h3>
-                            <p class="card-text">Mantén un registro de tus emociones y edad a lo largo del tiempo.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body text-center">
-                            <i class="fas fa-music fa-3x mb-3 text-primary"></i>
-                            <h3 class="card-title">Recomendaciones Musicales</h3>
-                            <p class="card-text">Obtén playlists personalizadas basadas en tu estado de ánimo.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Sección Hero -->
+    <section class="hero-section" role="banner" aria-label="Bienvenida">
+        <h1 class="hero-title">Bienvenido a AgeMatch</h1>
+        <p class="hero-subtitle">La solución inteligente para analizar tus emociones y edad</p>
+        <div class="hero-buttons">
+            <a href="{% url 'detector' %}" class="btn btn-primary btn-lg" aria-label="Iniciar detección">Iniciar Detección</a>
+            <a href="{% url 'estadisticas' %}" class="btn btn-outline-light btn-lg" aria-label="Ver estadísticas">Ver Estadísticas</a>
         </div>
+    </section>
 
-        <!-- Beneficios -->
-        <div class="col-12 mb-5">
-            <h2 class="text-center mb-4">¿Por qué usar AgeMatch?</h2>
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Autoconocimiento</h3>
-                            <p class="card-text">Conoce mejor tus emociones y patrones de comportamiento.</p>
-                        </div>
+    <!-- Características -->
+    <section aria-labelledby="features-title" class="mb-5">
+        <h2 id="features-title" class="text-center mb-4">¿Qué podemos hacer?</h2>
+        <div class="row g-4">
+            <article class="col-md-4" role="region" aria-label="Detección automática">
+                <div class="card feature-card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-camera feature-icon text-primary" aria-hidden="true"></i>
+                        <h3 class="feature-title">Detección Automática</h3>
+                        <p>Analiza tu rostro en tiempo real para detectar tu edad y emociones actuales.</p>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Bienestar Emocional</h3>
-                            <p class="card-text">Recibe recomendaciones personalizadas para mejorar tu estado de ánimo.</p>
-                        </div>
+            </article>
+            <article class="col-md-4" role="region" aria-label="Estadísticas inteligentes">
+                <div class="card feature-card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-chart-line feature-icon text-primary"></i>
+                        <h3 class="feature-title">Estadísticas Inteligentes</h3>
+                        <p>Mantén un registro de tus emociones y edad a lo largo del tiempo.</p>
                     </div>
                 </div>
-            </div>
+            </article>
+            <article class="col-md-4" role="region" aria-label="Recomendaciones musicales">
+                <div class="card feature-card h-100 text-center">
+                    <div class="card-body">
+                        <i class="fas fa-music feature-icon text-primary"></i>
+                        <h3 class="feature-title">Recomendaciones Musicales</h3>
+                        <p>Obtén playlists personalizadas basadas en tu estado de ánimo.</p>
+                    </div>
+                </div>
+            </article>
         </div>
+    </section>
 
-        <!-- CTA -->
-        <div class="col-12">
-            <div class="card text-white bg-primary">
-                <div class="card-body text-center">
-                    <h3 class="card-title mb-3">¡Empieza a conocer tus emociones hoy mismo!</h3>
-                    <a href="{% url 'detector' %}" class="btn btn-light btn-lg px-4">Iniciar Detección</a>
+    <!-- Beneficios -->
+    <section aria-labelledby="benefits-title" class="mb-5">
+        <h2 id="benefits-title" class="text-center mb-4">¿Por qué usar AgeMatch?</h2>
+        <div class="row g-4">
+            <article class="col-md-6" role="region" aria-label="Beneficio de autoconocimiento">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Autoconocimiento</h3>
+                        <p>Conoce mejor tus emociones y patrones de comportamiento.</p>
+                    </div>
                 </div>
-            </div>
+            </article>
+            <article class="col-md-6" role="region" aria-label="Beneficio de bienestar emocional">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title">Bienestar Emocional</h3>
+                        <p>Recibe recomendaciones personalizadas para mejorar tu estado de ánimo.</p>
+                    </div>
+                </div>
+            </article>
         </div>
-    </div>
+    </section>
+
+    <!-- CTA -->
+    <section role="region" aria-label="Llamado a la acción">
+        <div class="card bg-primary text-white text-center py-5 px-4 rounded-3 shadow-lg">
+            <h3 class="card-title mb-3">¡Empieza a conocer tus emociones hoy mismo!</h3>
+            <a href="{% url 'detector' %}" class="btn btn-light btn-lg px-5" aria-label="Iniciar detección">Iniciar Detección</a>
+        </div>
+    </section>
+
 </div>
 {% endblock %}
