@@ -2,67 +2,65 @@
 {% load static %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/pages/estadisticas.css' %}">
+<!-- Ya no necesitas css/pages/estadisticas.css si todo está con Tailwind -->
 {% endblock %}
 
 {% block extra_js %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'js/estadisticas.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/estadisticas.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="estadisticas-container">
-    <section class="grafico-section">
-        <div class="grafico-container">
-            <h2 class="grafico-title">Estadísticas de Emociones</h2>
-            <div class="grafico-wrapper">
-                <canvas id="grafico-emociones" data-registros='{{ registros|safe|escapejs }}'></canvas>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <section class="mb-10">
+        <div class="bg-white shadow-md rounded-xl p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Estadísticas de Emociones</h2>
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <canvas id="grafico-emociones" class="w-full md:w-2/3 max-h-[400px]" data-registros='{{ registros|safe|escapejs }}'></canvas>
                 {% if registros %}
-                    <div class="estadistica-info">
-                        <div class="estadistica-valor">{{ registros.0.total }}</div>
-                        <div class="estadistica-descripcion">Emoción más frecuente: {{ registros.0.emocion }}</div>
-                    </div>
+                <div class="bg-blue-100 text-blue-900 p-4 rounded-lg w-full md:w-1/3 text-center">
+                    <div class="text-3xl font-bold">{{ registros.0.total }}</div>
+                    <div class="text-lg">Emoción más frecuente: <span class="font-semibold">{{ registros.0.emocion }}</span></div>
+                </div>
                 {% endif %}
             </div>
         </div>
     </section>
 
-    <section class="registros-section">
-        <div class="registros-container">
+    <section class="mb-10">
+        <div class="bg-white shadow-md rounded-xl p-6 overflow-x-auto">
             {% if registros %}
-                <div class="table-responsive">
-                    <table class="estadisticas-table">
-                        <thead>
-                            <tr>
-                                <th class="table-header">Emoción</th>
-                                <th class="table-header">Total</th>
-                                <th class="table-header">Porcentaje</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for registro in registros %}
-                            <tr class="table-row">
-                                <td class="table-cell">{{ registro.emocion }}</td>
-                                <td class="table-cell">{{ registro.total }}</td>
-                                <td class="table-cell">{{ registro.total|floatformat:"1" }}%</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            <table class="min-w-full table-auto text-sm text-left">
+                <thead class="bg-gray-200 text-gray-700 uppercase text-xs tracking-wider">
+                    <tr>
+                        <th class="px-4 py-2">Emoción</th>
+                        <th class="px-4 py-2">Total</th>
+                        <th class="px-4 py-2">Porcentaje</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    {% for registro in registros %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ registro.emocion }}</td>
+                        <td class="px-4 py-2">{{ registro.total }}</td>
+                        <td class="px-4 py-2">{{ registro.total|floatformat:"1" }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             {% else %}
-                <p class="no-registros">No hay registros de emociones disponibles.</p>
+                <p class="text-center text-gray-500">No hay registros de emociones disponibles.</p>
             {% endif %}
         </div>
     </section>
 
     {% if posible_depresion %}
-        <section class="alerta-section">
-            <div class="alerta-depresión">
-                <h3 class="alerta-title">Alerta de Depresión</h3>
-                <p class="alerta-text">Se ha detectado una posible depresión debido a la cantidad de emociones tristes registradas.</p>
-            </div>
-        </section>
+    <section>
+        <div class="bg-red-100 border border-red-400 text-red-800 p-4 rounded-xl shadow">
+            <h3 class="text-xl font-semibold mb-2">⚠️ Alerta de Depresión</h3>
+            <p>Se ha detectado una posible depresión debido a la cantidad de emociones tristes registradas.</p>
+        </div>
+    </section>
     {% endif %}
 </div>
 {% endblock %}

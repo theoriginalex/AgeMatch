@@ -1,70 +1,70 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/components/forms.css' %}">
-<link rel="stylesheet" href="{% static 'css/auth/login.css' %}">
+<!-- No se necesita importar CSS personalizado -->
 {% endblock %}
 
 {% block content %}
-<div class="login-container">
-    <div class="form-card">
-        <div class="form-header">
-            <h3>Iniciar Sesión</h3>
-        </div>
-        <div class="form-body">
-            <form method="post" class="login-form">
-                {% csrf_token %}
-                
-                {% if form.errors %}
-                <div class="form-error">
-                    Por favor, corrige los errores a continuación:
-                </div>
-                {% endif %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4 py-10">
+  <div class="w-full max-w-md bg-white shadow-xl rounded-lg p-6 space-y-6">
 
-                <div class="form-group {% if form.username.errors %}has-error{% endif %}">
-                    <label for="{{ form.username.id_for_label }}" class="form-label">Usuario</label>
-                    {{ form.username }}
-                    {% if form.username.errors %}
-                        <div class="form-error">
-                            {% for error in form.username.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <div class="form-group {% if form.password.errors %}has-error{% endif %}">
-                    <label for="{{ form.password.id_for_label }}" class="form-label">Contraseña</label>
-                    {{ form.password }}
-                    {% if form.password.errors %}
-                        <div class="form-error">
-                            {% for error in form.password.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-
-                <button type="submit" class="form-button">
-                    Iniciar Sesión
-                </button>
-
-                <div class="form-message">
-                    <a href="{% url 'auth:password_reset' %}" class="form-link">
-                        ¿Olvidaste tu contraseña?
-                    </a>
-                </div>
-
-                <div class="form-message">
-                    <p>¿No tienes cuenta? 
-                        <a href="{% url 'auth:register' %}" class="form-link">
-                            Regístrate aquí
-                        </a>
-                    </p>
-                </div>
-            </form>
-        </div>
+    <div class="text-center">
+      <h3 class="text-2xl font-semibold text-gray-800">Iniciar Sesión</h3>
     </div>
+
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+
+      {% if form.errors %}
+      <div class="bg-red-100 text-red-700 p-3 rounded-md text-sm">
+        Por favor, corrige los errores a continuación:
+      </div>
+      {% endif %}
+
+      <!-- Campo de usuario -->
+      <div>
+        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">Usuario</label>
+        {{ form.username|add_class:"w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+        {% if form.username.errors %}
+        <p class="text-sm text-red-600 mt-1">
+          {% for error in form.username.errors %}
+            {{ error }}
+          {% endfor %}
+        </p>
+        {% endif %}
+      </div>
+
+      <!-- Campo de contraseña -->
+      <div>
+        <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-gray-700">Contraseña</label>
+        {{ form.password|add_class:"w-full mt-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" }}
+        {% if form.password.errors %}
+        <p class="text-sm text-red-600 mt-1">
+          {% for error in form.password.errors %}
+            {{ error }}
+          {% endfor %}
+        </p>
+        {% endif %}
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition">
+        Iniciar Sesión
+      </button>
+
+      <!-- Enlaces -->
+      <div class="text-center text-sm mt-3">
+        <a href="{% url 'auth:password_reset' %}" class="text-blue-600 hover:underline">¿Olvidaste tu contraseña?</a>
+      </div>
+
+      <div class="text-center text-sm">
+        ¿No tienes cuenta?
+        <a href="{% url 'auth:register' %}" class="text-blue-600 hover:underline">Regístrate aquí</a>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

@@ -16,13 +16,13 @@ REDIRECT_URI = 'http://127.0.0.1:8000/detector/callback/'
 
 @login_required
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'detector/home.html')
 
 def detector_view(request):
     if not request.user.is_authenticated:
         return redirect('auth:register')
     # Renderiza la página con la cámara y botón
-    return render(request, 'detector.html')
+    return render(request, 'detector/detector.html')
 
 @csrf_exempt  # Solo para pruebas; luego maneja bien CSRF
 def detectar_emocion_edad_view(request):

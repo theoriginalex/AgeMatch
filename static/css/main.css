@@ -1,9 +1,0 @@
-@import url('base/base.css');              /* Reset + Layout base */
-@import url('components/components.css');  /* Tarjetas, footer, navbar, botones */
-@import url('pages/home.css');             /* Página de inicio */
-@import url('pages/login.css');            /* Login */
-@import url('pages/detector.css');         /* Detector */
-@import url('pages/estadisticas.css');     /* Estadísticas */
-
-@import url('components/navbar.css'); /* si está separado */
-

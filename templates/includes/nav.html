@@ -1,22 +1,36 @@
-<nav class="navbar">
-    <div class="container nav-container">
-      <div class="nav-logo">
-        {% if user.is_authenticated %}
-          <a href="{% url 'home' %}" class="logo-link">AgeMatch</a>
-        {% else %}
-          <span class="logo-text">AgeMatch</span>
-        {% endif %}
-      </div>
-  
-      <ul class="nav-links">
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'estadisticas' %}">Estadísticas</a></li>
-        <li><a href="{% url 'detector' %}">Detector</a></li>
-        <li><a href="{% url 'auth:logout' %}">Cerrar Sesión</a></li>
-        {% else %}
-        <li><a href="{% url 'auth:login' %}">Iniciar Sesión</a></li>
-        <li><a href="{% url 'auth:register' %}">Registrarse</a></li>
-        {% endif %}
-    </ul>
+<nav class="bg-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+    
+    <!-- Logo -->
+    <div class="text-2xl font-extrabold text-purple-700 tracking-wide">
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}" class="hover:underline">AgeMatch</a>
+      {% else %}
+        <span>AgeMatch</span>
+      {% endif %}
     </div>
+
+    <!-- Navigation Links -->
+    <ul class="flex items-center space-x-6 text-sm md:text-base text-gray-700 font-medium">
+      {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'estadisticas' %}" class="hover:text-purple-600 transition-colors">Estadísticas</a>
+        </li>
+        <li>
+          <a href="{% url 'detector' %}" class="hover:text-purple-600 transition-colors">Detector</a>
+        </li>
+        <li>
+          <a href="{% url 'auth:logout' %}" class="text-red-600 hover:text-red-800 transition-colors">Cerrar Sesión</a>
+        </li>
+      {% else %}
+        <li>
+          <a href="{% url 'auth:login' %}" class="hover:text-purple-600 transition-colors">Iniciar Sesión</a>
+        </li>
+        <li>
+          <a href="{% url 'auth:register' %}" class="hover:text-purple-600 transition-colors">Registrarse</a>
+        </li>
+      {% endif %}
+    </ul>
+
+  </div>
 </nav>

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- Hero Section -->
+    <section class="text-center mb-12" role="banner" aria-label="Bienvenida">
+        <h1 class="text-4xl font-bold text-gray-800 mb-4">Bienvenido a AgeMatch</h1>
+        <p class="text-lg text-gray-600 mb-6">La solución inteligente para analizar tus emociones y edad</p>
+        <div class="flex flex-col md:flex-row justify-center gap-4">
+            <a href="{% url 'detector' %}" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200" aria-label="Iniciar detección">Iniciar Detección</a>
+            <a href="{% url 'estadisticas' %}" class="border border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold py-2 px-6 rounded-lg transition duration-200" aria-label="Ver estadísticas">Ver Estadísticas</a>
+        </div>
+    </section>
+
+    <!-- Features -->
+  <section aria-labelledby="features-title" class="mb-16">
+  <h2 id="features-title" class="text-2xl font-semibold text-center mb-8">¿Qué podemos hacer?</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <!-- Detección Automática -->
+    <a href="{% url 'detector' %}" class="block">
+      <article class="bg-white shadow rounded-lg p-6 text-center hover:shadow-lg transition">
+        <i class="fas fa-camera text-3xl text-blue-600 mb-4"></i>
+        <h3 class="text-xl font-bold mb-2">Detección Automática</h3>
+        <p class="text-gray-600">Analiza tu rostro en tiempo real para detectar tu edad y emociones actuales.</p>
+      </article>
+    </a>
+
+    <!-- Estadísticas Inteligentes -->
+    <a href="{% url 'estadisticas' %}" class="block">
+      <article class="bg-white shadow rounded-lg p-6 text-center hover:shadow-lg transition">
+        <i class="fas fa-chart-line text-3xl text-blue-600 mb-4"></i>
+        <h3 class="text-xl font-bold mb-2">Estadísticas Inteligentes</h3>
+        <p class="text-gray-600">Mantén un registro de tus emociones y edad a lo largo del tiempo.</p>
+      </article>
+    </a>
+
+    {% comment %} <!-- Recomendaciones Musicales -->
+    <a href="{% url 'recomendaciones' %}" class="block">
+      <article class="bg-white shadow rounded-lg p-6 text-center hover:shadow-lg transition">
+        <i class="fas fa-music text-3xl text-blue-600 mb-4"></i>
+        <h3 class="text-xl font-bold mb-2">Recomendaciones Musicales</h3>
+        <p class="text-gray-600">Obtén playlists personalizadas basadas en tu estado de ánimo.</p>
+      </article>
+    </a> {% endcomment %}
+
+  </div>
+</section>
+
+    <!-- Benefits -->
+    <section aria-labelledby="benefits-title" class="mb-16">
+        <h2 id="benefits-title" class="text-2xl font-semibold text-center mb-8">¿Por qué usar AgeMatch?</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+            <article class="bg-white shadow rounded-lg p-6" role="region" aria-label="Beneficio de autoconocimiento">
+                <h3 class="text-xl font-semibold mb-2">Autoconocimiento</h3>
+                <p class="text-gray-600">Conoce mejor tus emociones y patrones de comportamiento.</p>
+            </article>
+            <article class="bg-white shadow rounded-lg p-6" role="region" aria-label="Beneficio de bienestar emocional">
+                <h3 class="text-xl font-semibold mb-2">Bienestar Emocional</h3>
+                <p class="text-gray-600">Recibe recomendaciones personalizadas para mejorar tu estado de ánimo.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section role="region" aria-label="Llamado a la acción" class="bg-blue-600 text-white text-center py-10 px-6 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-bold mb-4">¡Empieza a conocer tus emociones hoy mismo!</h3>
+        <a href="{% url 'detector' %}" class="bg-white text-blue-600 font-semibold py-2 px-6 rounded-lg hover:bg-blue-50 transition duration-200" aria-label="Iniciar detección">Iniciar Detección</a>
+    </section>
+
+</div>
+{% endblock %}

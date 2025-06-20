@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -11,6 +13,8 @@ urlpatterns = [
     path('detector/spotify/reproducir/', views.reproducir_playlist, name='reproducir_playlist'),
     path('detector/spotify/refresh/', views.refresh_spotify_token, name='refresh_token'),
     path('estadisticas/', views.estadisticas_view, name='estadisticas'),
-    path('estadisticas', views.estadisticas_view, name='estadisticas'),
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

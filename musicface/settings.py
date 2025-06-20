@@ -54,11 +54,14 @@ TEMPLATES = [
     },
 ]
 
-# Configuración de archivos estáticos
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'tailwind_theme' / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
 
 # Application definition
 
@@ -72,7 +75,20 @@ INSTALLED_APPS = [
     'musicface',
     'agematch',
     'authapp',
+    'tailwind',
+    'tailwind_theme', 
+    'django_browser_reload',
+    'widget_tweaks',
+
 ]
+
+TAILWIND_APP_NAME = 'tailwind_theme'
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,7 +131,7 @@ DATABASES = {
         'USER': os.getenv('DB_USER', 'postgres'),
         'PASSWORD': os.getenv('DB_PASSWORD', '123456'),
         'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'PORT': os.getenv('DB_PORT', '5433'),
     }
 }
 
