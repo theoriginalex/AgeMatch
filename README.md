@@ -10,7 +10,6 @@ Agematch
  1. Clona el repositorio:
 ```bash
 git clone https://github.com/theoriginalex/AgeMatch.git
-cd proyecto-emociones
 ```
 
  2. Crea un entorno virtual e instala dependencias:
@@ -35,6 +34,30 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+# Instalación del frontend (Tailwind CSS)
+##  Requisitos
+
+- Python 3.11
+- Node.js y npm
+- Entorno virtual activado
+
+#  Tener Instalada las dependencias de Python
+
+# Ejecutar estos comando 
+# Crear package.json si aún no existe
+npm init -y
+
+# Instalar Tailwind CSS y sus herramientas
+npm install -D tailwindcss postcss autoprefixer
+
+# Crear el archivo de configuración de Tailwind
+npx tailwindcss init
+
+# Compilar el CSS (esto generará static/css/output.css)
+npm run build-css
+
+
+
 # Descripción del proyecto
 
 Este proyecto usa visión por computadora para detectar emociones humanas a través de la cámara, y según la emoción detectada, recomienda y reproduce automáticamente una playlist de Spotify.
@@ -52,9 +75,8 @@ Spotify API (OAuth 2.0) – Recomendaciones musicales.
 
 PostgreSQL – Almacenamiento de emociones y usuarios.
 
-Power BI – Visualización de estadísticas.
 
-HTML, CSS, JavaScript – Interfaz web.
+HTML, tailwindCSS, JavaScript – Interfaz web.
 
 # Funcionalidades:
 
@@ -62,12 +84,7 @@ HTML, CSS, JavaScript – Interfaz web.
 - Recomendación musical basada en emoción detectada.
 - Reproducción automática de playlist usando la API de Spotify.
 - Registro de emociones por usuario.
-- Visualización de estadísticas con Power BI integradas en Django.
-
-# Visualización de Power BI
-
-Se incluye un iframe que muestra estadísticas emocionales personalizadas directamente en la web del usuario.
-
+- Visualización de estadísticas .
 
 
 **Licencia:** Este proyecto es académico y no tiene fines comerciales.
