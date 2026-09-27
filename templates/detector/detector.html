@@ -52,6 +52,10 @@
     });
 
   function capturar() {
+    if (!video.videoWidth) {
+      resultado.textContent = 'La cámara aún no está lista, espera un momento e inténtalo de nuevo.';
+      return;
+    }
     btn.disabled = true;
     resultado.textContent = "Procesando imagen...";
     musica.innerHTML = "";

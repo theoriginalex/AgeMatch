@@ -6,8 +6,39 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'js/estadisticas.js' %}"></script>
+{# Chart.js ya se carga en base.html #}
+{{ registros|json_script:"datos-emociones" }}
+<script>
+    window.addEventListener('load', function () {
+        const registros = JSON.parse(document.getElementById('datos-emociones').textContent);
+        const canvas = document.getElementById('grafico-emociones');
+        if (!canvas || !registros.length) return;
+
+        new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: registros.map(r => r.emocion),
+                datasets: [{
+                    data: registros.map(r => r.total),
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#8BC34A'],
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'left',
+                        labels: { color: '#374151', font: { size: 14 } }
+                    }
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
 
 {% block content %}
@@ -16,7 +47,11 @@
         <div class="bg-white shadow-md rounded-xl p-6">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Estadísticas de Emociones</h2>
             <div class="flex flex-col md:flex-row gap-6 items-center">
-                <canvas id="grafico-emociones" class="w-full md:w-2/3 max-h-[400px]" data-registros='{{ registros|safe|escapejs }}'></canvas>
+                {% if registros %}
+                <div class="relative w-full md:w-2/3 h-[400px]">
+                    <canvas id="grafico-emociones"></canvas>
+                </div>
+                {% endif %}
                 {% if registros %}
                 <div class="bg-blue-100 text-blue-900 p-4 rounded-lg w-full md:w-1/3 text-center">
                     <div class="text-3xl font-bold">{{ registros.0.total }}</div>
@@ -43,7 +78,7 @@
                     <tr class="hover:bg-gray-50">
                         <td class="px-4 py-2">{{ registro.emocion }}</td>
                         <td class="px-4 py-2">{{ registro.total }}</td>
-                        <td class="px-4 py-2">{{ registro.total|floatformat:"1" }}%</td>
+                        <td class="px-4 py-2">{{ registro.porcentaje|floatformat:"1" }}%</td>
                     </tr>
                     {% endfor %}
                 </tbody>

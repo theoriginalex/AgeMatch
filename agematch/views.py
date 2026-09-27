@@ -183,13 +183,18 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def estadisticas_view(request):
-    registros = (RegistroEmocion.objects
+    registros = list(RegistroEmocion.objects
                 .filter(usuario=request.user)
                 .values('emocion')
                 .annotate(total=Count('emocion'))
                 .order_by('-total'))
 
-    posible_depresion = any(r['emocion'] == 'triste' and r['total'] >= 5 for r in registros)
+    total_general = sum(r['total'] for r in registros)
+    for r in registros:
+        r['porcentaje'] = r['total'] * 100 / total_general
+
+    # Las emociones se guardan traducidas y capitalizadas ('Triste'), ver servicio/unificado.py
+    posible_depresion = any(r['emocion'] == 'Triste' and r['total'] >= 5 for r in registros)
 
     return render(request, 'estadisticas.html', {
         'registros': registros,
